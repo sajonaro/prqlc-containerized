@@ -1,0 +1,29 @@
+FROM rust:bookworm AS builder
+
+# Install git and other dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Clone the PRQL repository
+WORKDIR /usr/src
+RUN git clone https://github.com/PRQL/prql.git
+
+# Build the prqlc project
+WORKDIR /usr/src/prql/prqlc/prqlc
+RUN cargo build --release
+
+# Create a smaller runtime image
+FROM debian:bookworm-slim
+
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy the compiled binary from the builder stage
+COPY --from=builder /usr/src/prql/target/release/prqlc /usr/local/bin/prqlc
+
+# Set the entrypoint to the prqlc binary
+ENTRYPOINT ["prqlc"]
+CMD ["--help"]
