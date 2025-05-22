@@ -20,7 +20,7 @@ This project is inspired by [prql-query project](https://github.com/PRQL/prql-qu
     $ docker pull sajonaro/prqlc-in-container:debian
 
     # 2 (optionally) create alias to command invoking prqlc image
-    $ alias pq="docker run --rm -it -v $(pwd):/data -e HOME=/tmp -u $(id -u):$(id -g) prqlc"
+    $ alias pq="docker run --rm -it -v $(pwd):/data -e HOME=/tmp -u $(id -u):$(id -g) sajonaro/prqlc-in-container:debian"
 
 ```    
 - example usage:
