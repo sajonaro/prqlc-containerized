@@ -1,7 +1,6 @@
 ### Description
 
 Here we containerize PRQL compiler `prqlc`[its original repo  is here](https://github.com/PRQL/prql/tree/main/prqlc/prqlc).
-This project is inspired by [prql-query project](https://github.com/PRQL/prql-query)
 
 
 ### How to use it
@@ -12,23 +11,20 @@ This project is inspired by [prql-query project](https://github.com/PRQL/prql-qu
     $./build_locally.sh
 
     # 2 (optionally) create alias to command invoking prqlc image
-    $ alias pq="docker run --rm -it -v $(pwd):/data -e HOME=/tmp -u $(id -u):$(id -g) prqlc"
+    $ alias prqlc="docker run -i --rm prqlc"
 
-```    
-```bash
-    # or pull it from the docker hub
+
+    # alternatively, pull it from the docker hub
     $ docker pull sajonaro/prqlc-in-container:debian
-
-    # 2 (optionally) create alias to command invoking prqlc image
-    $ alias pq="docker run --rm -it -v $(pwd):/data -e HOME=/tmp -u $(id -u):$(id -g) sajonaro/prqlc-in-container:debian"
+    $ alias prqlc="docker run --rm -i sajonaro/prqlc-in-container:debian"
 
 ```    
-- example usage:
+- usage example
 ```bash
     # use directly
-    $ pq --help
+    $ prqlc --help
 
-    # or pipe the transpiled sql into database
-    # e.g. select top 5 records from `countries`table
-    $ pq "from countries | take 5" | psql postgresql://username:password@host:port/database
+    # or pipe the prsql query into it
+    $ echo 'from employees | filter has_dog | select salary' | prqlc compile
 ```
+
